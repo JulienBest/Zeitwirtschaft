@@ -8,14 +8,16 @@ loadData()
 
 function kommen() {
   let element = getChildByParentClass(today, "von")
-  element.innerHTML = date.getHours() + ":" + date.getMinutes()
+  date = new Date();
+  element.innerHTML = formatNumber(date.getHours()) + ":" + formatNumber(date.getMinutes())
   synchronizeValues();
   saveData()
 }
 
 function gehen() {
   let element = getChildByParentClass(today, "bis")
-  element.innerHTML = date.getHours() + ":" + date.getMinutes()
+  date = new Date();
+  element.innerHTML = formatNumber(date.getHours()) + ":" + formatNumber(date.getMinutes())
   synchronizeValues();
   saveData()
 }
@@ -64,8 +66,6 @@ function synchronizeValues() {
         pause.innerHTML = "00:00"
       }
       ist_pause.innerHTML = calcRestTime(pause.innerHTML, ist.innerHTML)
-      console.log(ist_pause.innerHTML.split(":")[0] >= restzeit.split(":")[0]);
-      console.log(ist_pause.innerHTML.split(":")[1] >= restzeit.split(":")[1]);
       if (ist_pause.innerHTML.split(":")[0] > restzeit.split(":")[0]) {
           restzeit = "00:00"
       } else {
@@ -113,8 +113,8 @@ function addTime() {
   tag = tag.options[tag.selectedIndex].value
   let von = getChildByParentClass(tag, "von")
   let bis = getChildByParentClass(tag, "bis")
-  von.innerHTML = i_von
-  bis.innerHTML = i_bis
+  if (i_von != "") von.innerHTML = i_von
+  if (i_bis != "") bis.innerHTML = i_bis
   synchronizeValues()
   saveData()
 }
