@@ -10,12 +10,14 @@ body {
   width: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 table {
   background-color: #333;
   border-collapse: collapse;
   border: none;
+  margin-bottom: 15px;
 }
 thead {
   background-color: #444;
@@ -39,11 +41,13 @@ button {
 .kommen {
   color:black;
   background-color: #9fff8a;
+  margin-right: 5px;
 }
 
 .gehen {
   color:black;
   background-color: #d95961;
+  margin-left: 5px;
 }
 
 input {
@@ -51,6 +55,7 @@ input {
   width: 75px;
   height: 15px;
   color:white;
+  text-align: center;
 }
 
 select {
@@ -62,4 +67,20 @@ select {
 
 .buttoncontainer {
   margin-top: 30px;
+}
+
+.goal-button-c {
+  margin-top: 15px;
+}
+
+.goal {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: : center;
+}
+
+.reset {
+  color:black;
+  background-color: #d95961;
 }

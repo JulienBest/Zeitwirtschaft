@@ -1,21 +1,23 @@
 var date = new Date();
-wochentag=new Array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag","Samstag");
+wochentag = new Array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag","Samstag");
 let today = wochentag[date.getDay()];
 
 let rows = document.getElementsByClassName("table-row")
 
-console.log(rows[0])
+loadData()
 
 function kommen() {
   let element = getChildByParentClass(today, "von")
   element.innerHTML = date.getHours() + ":" + date.getMinutes()
   synchronizeValues();
+  saveData()
 }
 
 function gehen() {
   let element = getChildByParentClass(today, "bis")
   element.innerHTML = date.getHours() + ":" + date.getMinutes()
   synchronizeValues();
+  saveData()
 }
 
 function getChildByParentClass(parentclass, childclass) {
@@ -38,7 +40,11 @@ function getChildByParent(parent, childclass) {
 }
 
 function synchronizeValues() {
-  let restzeit = "20:00"
+  let restzeit = localStorage.getItem('goal');
+  if (restzeit == null) {
+    restzeit = "20:00"
+    localStorage.setItem('goal', restzeit);
+  }
   for (let i = 0; i < rows.length; i++) {
     let von = getChildByParent(rows[i], "von")
     let bis = getChildByParent(rows[i], "bis")
@@ -47,7 +53,7 @@ function synchronizeValues() {
       let pause = getChildByParent(rows[i], "pause")
       let ist_pause = getChildByParent(rows[i], "ist-pause")
       let rest = getChildByParent(rows[i], "restzeit")
-      ist.innerHTML = calcDiff(von, bis)
+      ist.innerHTML = calcRestTime(von.innerHTML, bis.innerHTML)
       if (calcHours(von, bis) >= 6) {
         pause.innerHTML = "00:30"
       }
@@ -57,42 +63,35 @@ function synchronizeValues() {
       if (calcHours(von, bis) < 6) {
         pause.innerHTML = "00:00"
       }
-      ist_pause.innerHTML = substractTime(ist.innerHTML, pause.innerHTML)
-      if (ist_pause.innerHTML.split(":")[0] > restzeit.split(":")[0] && ist_pause.innerHTML.split(":")[1] > restzeit.split(":")[1]) {
-        restzeit = "00:00"
+      ist_pause.innerHTML = calcRestTime(pause.innerHTML, ist.innerHTML)
+      console.log(ist_pause.innerHTML.split(":")[0] >= restzeit.split(":")[0]);
+      console.log(ist_pause.innerHTML.split(":")[1] >= restzeit.split(":")[1]);
+      if (ist_pause.innerHTML.split(":")[0] > restzeit.split(":")[0]) {
+          restzeit = "00:00"
       } else {
-        restzeit = substractTime(restzeit, ist_pause.innerHTML)
+        restzeit = calcRestTime(ist_pause.innerHTML, restzeit)
       }
       rest.innerHTML = restzeit
     }
   }
 }
 
-function calcDiff(von, bis) {
-  let h_diff = bis.innerHTML.split(":")[0] - von.innerHTML.split(":")[0]
-  let m_diff = bis.innerHTML.split(":")[1] - von.innerHTML.split(":")[1]
-  return formatNumber(h_diff) + ":" + formatNumber(m_diff)
-}
 
-function calcDiffString(start, end) {
-    start = start.split(":");
-    end = end.split(":");
-    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-    var diff = endDate.getTime() - startDate.getTime();
-    var hours = Math.floor(diff / 1000 / 60 / 60);
-    diff -= hours * 1000 * 60 * 60;
-    var minutes = Math.floor(diff / 1000 / 60);
-    if (hours < 0)
-       hours = hours + 24;
-    return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
-}
-
-function substractTime(time, time2) {
-  var olddate = new Date(2022, 2, 22, time.split(":")[0], time.split(":")[1], 0, 0);
-  var subbed = new Date(olddate - time2.split(":")[0]*60*60*1000 - time2.split(":")[1]*60*1000);
-  var newtime = formatNumber(subbed.getHours()) + ':' + formatNumber(subbed.getMinutes());
-  return newtime
+function calcRestTime(time1, time2) {
+  ist_h = time1.split(":")[0]
+  ist_m = time1.split(":")[1]
+  rest_h = time2.split(":")[0]
+  rest_m = time2.split(":")[1]
+  diff_h = rest_h - ist_h
+  diff_m = rest_m - ist_m
+  if (diff_m < 0) {
+    diff_m += 60
+    diff_h -= 1
+  }
+  if (diff_h < 0) {
+    return "00:00"
+  }
+  return formatNumber(diff_h) + ":" + formatNumber(diff_m)
 }
 
 function calcHours(von, bis) {
@@ -107,7 +106,6 @@ function formatNumber(num) {
   return num
 }
 
-
 function addTime() {
   let i_von = document.getElementById("input-von").value
   let i_bis = document.getElementById("input-bis").value
@@ -117,5 +115,46 @@ function addTime() {
   let bis = getChildByParentClass(tag, "bis")
   von.innerHTML = i_von
   bis.innerHTML = i_bis
+  synchronizeValues()
+  saveData()
+}
+
+function setGoal() {
+  let goal = document.getElementById("input-goal").value
+  localStorage.setItem('goal', goal);
+  synchronizeValues()
+}
+
+
+function resetStorage() {
+  localStorage.clear();
+  location.reload();
+}
+
+function saveData() {
+  let data = []
+  for (let i = 0; i < rows.length; i++) {
+    let von = getChildByParent(rows[i], "von").innerHTML
+    let bis = getChildByParent(rows[i], "bis").innerHTML
+    let day = []
+    day.push(von)
+    day.push(bis)
+    data.push(day)
+  }
+  localStorage.setItem('data', JSON.stringify(data));
+}
+
+function loadData() {
+  let savedGoal = localStorage.getItem('goal');
+  if (savedGoal == null) savedGoal = "20:00"
+  document.getElementById("input-goal").value = savedGoal
+
+  let data = JSON.parse(localStorage.getItem("data"))
+  if (data == null) return
+  console.log(data);
+  for (let i = 0; i < rows.length; i++) {
+    let von = getChildByParent(rows[i], "von").innerHTML = data[i][0]
+    let bis = getChildByParent(rows[i], "bis").innerHTML = data[i][1]
+  }
   synchronizeValues()
 }

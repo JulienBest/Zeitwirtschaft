@@ -7,6 +7,22 @@
   </head>
   <body>
     <div class="main">
+      <header>
+        <div class="empty header-item"></div>
+        <h1 class="header-item">Zeitwirtschaft</h1>
+        <div class="reset-c">
+          <button type="button" class="reset header-item" onclick="resetStorage()">Reset</button>
+        </div>
+      </header>
+      <div class="goal">
+        <h3>Wöchentliches Stundenziel</h3>
+        <div class="goal-input-c">
+          <input type="text" id="input-goal" placeholder="HH:MM">
+        </div>
+        <div class="goal-button-c">
+          <button type="button" class="setgoal" onclick="setGoal()">Anwenden</button>
+        </div>
+      </div>
       <table>
        <thead>
          <tr>
@@ -88,11 +104,11 @@
         </select>
         <div class="ivon">
           <p>Von</p>
-          <input type="text" id="input-von">
+          <input type="text" id="input-von" placeholder="HH:MM">
         </div>
         <div class="ibis">
           <p>Bis</p>
-          <input type="text" id="input-bis">
+          <input type="text" id="input-bis" placeholder="HH:MM">
         </div>
         <div class="buttoncontainer">
           <button type="button" class="add" onclick="addTime()">Hinzufügen</button>
