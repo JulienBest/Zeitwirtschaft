@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="./style.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main">
+      <table>
+       <thead>
+         <tr>
+           <th>Wochentag</th>
+           <th>Von</th>
+           <th>Bis</th>
+           <th>Ist</th>
+           <!-- 6 - 9 Stunden: 30 min Pause, ab 9 Stunden: 45 min -->
+           <th>Pause</th>
+           <th>Ist - Pause</th>
+           <th>Verbleibende Zeit</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr class="table-row Montag">
+           <td class ="name">Montag</td>
+           <td class="von">-</td>
+           <td class="bis">-</td>
+           <td class="ist">-</td>
+           <td class="pause">-</td>
+           <td class="ist-pause">-</td>
+           <td class="restzeit">-</td>
+         </tr>
+
+         <tr class="table-row Dienstag">
+           <td class ="name">Dienstag</td>
+           <td class="von">-</td>
+           <td class="bis">-</td>
+           <td class="ist">-</td>
+           <td class="pause">-</td>
+           <td class="ist-pause">-</td>
+           <td class="restzeit">-</td>
+         </tr>
+
+         <tr class="table-row Mittwoch">
+           <td class ="name">Mittwoch</td>
+           <td class="von">-</td>
+           <td class="bis">-</td>
+           <td class="ist">-</td>
+           <td class="pause">-</td>
+           <td class="ist-pause">-</td>
+           <td class="restzeit">-</td>
+         </tr>
+
+         <tr class="table-row Donnerstag">
+           <td class ="name">Donnerstag</td>
+           <td class="von">-</td>
+           <td class="bis">-</td>
+           <td class="ist">-</td>
+           <td class="pause">-</td>
+           <td class="ist-pause">-</td>
+           <td class="restzeit">-</td>
+         </tr>
+
+         <tr class="table-row Freitag">
+           <td class ="name">Freitag</td>
+           <td class="von">-</td>
+           <td class="bis">-</td>
+           <td class="ist">-</td>
+           <td class="pause">-</td>
+           <td class="ist-pause">-</td>
+           <td class="restzeit">-</td>
+         </tr>
+       </tbody>
+      </table>
+      <div class="buttons">
+        <button type="button" class="kommen" onclick="kommen()">Kommen</button>
+        <button type="button" class="gehen" onclick="gehen()">Gehen</button>
+      </div>
+
+      <div class="data-input">
+        <h2>Daten nachtragen</h2>
+        <select id="tag">
+          <option value="Montag">Montag</option>
+          <option value="Dienstag">Dienstag</option>
+          <option value="Mittwoch">Mittwoch</option>
+          <option value="Donnerstag">Donnerstag</option>
+          <option value="Freitag">Freitag</option>
+        </select>
+        <div class="ivon">
+          <p>Von</p>
+          <input type="text" id="input-von">
+        </div>
+        <div class="ibis">
+          <p>Bis</p>
+          <input type="text" id="input-bis">
+        </div>
+        <div class="buttoncontainer">
+          <button type="button" class="add" onclick="addTime()">Hinzufügen</button>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
