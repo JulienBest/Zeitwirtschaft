@@ -55,14 +55,16 @@ function synchronizeValues() {
       let pause = getChildByParent(rows[i], "pause")
       let ist_pause = getChildByParent(rows[i], "ist-pause")
       let rest = getChildByParent(rows[i], "restzeit")
-      ist.innerHTML = calcRestTime(von.innerHTML, bis.innerHTML)
-      if (calcHours(von, bis) >= 6) {
+      let diff = calcRestTime(von.innerHTML, bis.innerHTML)
+      ist.innerHTML = diff
+      let diff_h = diff.split(":")[0]
+      if (diff_h >= 6) {
         pause.innerHTML = "00:30"
       }
-      if (calcHours(von, bis) >= 9) {
+      if (diff_h >= 9) {
         pause.innerHTML = "00:45"
       }
-      if (calcHours(von, bis) < 6) {
+      if (diff_h < 6) {
         pause.innerHTML = "00:00"
       }
       ist_pause.innerHTML = calcRestTime(pause.innerHTML, ist.innerHTML)
@@ -92,11 +94,6 @@ function calcRestTime(time1, time2) {
     return "00:00"
   }
   return formatNumber(diff_h) + ":" + formatNumber(diff_m)
-}
-
-function calcHours(von, bis) {
-  let h_diff = bis.innerHTML.split(":")[0] - von.innerHTML.split(":")[0]
-  return h_diff
 }
 
 function formatNumber(num) {
