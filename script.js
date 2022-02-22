@@ -47,6 +47,8 @@ function synchronizeValues() {
     restzeit = "20:00"
     localStorage.setItem('goal', restzeit);
   }
+  let summe_h = 0;
+  let summe_m = 0;
   for (let i = 0; i < rows.length; i++) {
     let von = getChildByParent(rows[i], "von")
     let bis = getChildByParent(rows[i], "bis")
@@ -68,6 +70,8 @@ function synchronizeValues() {
         pause.innerHTML = "00:00"
       }
       ist_pause.innerHTML = calcRestTime(pause.innerHTML, ist.innerHTML)
+      summe_h += parseInt(ist_pause.innerHTML.split(":")[0])
+      summe_m += parseInt(ist_pause.innerHTML.split(":")[1])
       if (ist_pause.innerHTML.split(":")[0] > restzeit.split(":")[0]) {
           restzeit = "00:00"
       } else {
@@ -76,6 +80,10 @@ function synchronizeValues() {
       rest.innerHTML = restzeit
     }
   }
+  let summe = document.getElementById("summe")
+  summe_h += parseInt(summe_m/60)
+  summe_m = summe_m % 60
+  summe.innerHTML = "Diese Woche gearbeitet: " + formatNumber(summe_h) + ":" + formatNumber(summe_m) + " Stunden"
 }
 
 
